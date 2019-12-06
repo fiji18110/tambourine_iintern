@@ -8,6 +8,11 @@ class Book extends Model
 {
     protected $fillable = [
         'title',
-        'subtitle',
+        'subTitle',
         'imageUrl',
-    ];}
+        'isbn',
+    ];
+    public function book(){
+        return $this->hasMany('App\Book');
+    }
+}

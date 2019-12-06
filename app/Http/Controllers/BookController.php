@@ -8,8 +8,7 @@ use Illuminate\Http\Request;
 class BookController extends Controller
 {
     public function index(){
-        $books = Book::get();
-        return view('home', ['books' => $books]);
+        return view('home');
     }
     // 保存
     public function addBook(Request $request,$isbn) {
@@ -19,6 +18,10 @@ class BookController extends Controller
         $book->imageUrl=$request->imageUrl;
         $book->isbn=$isbn;
         $book->save();
+    }
+    public function getBookInfo(){
+        $book_info=Book::select('title','subTitle','imageUrl','isbn')->get();
+        return response()->json($book_info);
     }
 
     public function deleteBook($isbn){

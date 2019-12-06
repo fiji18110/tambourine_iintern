@@ -1871,6 +1871,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1885,14 +1887,53 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    books: {
-      type: String
+  data: function data() {
+    //データの初期値を設定
+    return {
+      title: [],
+      subTitle: [],
+      imageUrl: [],
+      isbn: []
+    };
+  },
+  methods: {
+    getBookInfo: function getBookInfo() {
+      var _this = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://localhost:8000/api/getInfo').then(function (response) {
+        for (var i = 0, l = response.data.length; i < l; i++) {
+          _this.title.push(response.data[i].title);
+
+          _this.subTitle.push(response.data[i].subTitle);
+
+          _this.imageUrl.push(response.data[i].imageUrl);
+
+          _this.isbn.push(response.data[i].isbn);
+        }
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   mounted: function mounted() {
     console.log();
+  },
+  created: function created() {
+    this.getBookInfo();
   }
 });
 
@@ -37338,29 +37379,35 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "dl",
-      [
-        _c("dt", [_vm._v("Title")]),
-        _vm._v(" "),
-        _c("dd", [_vm._v(_vm._s(JSON.parse(_vm.books)[2]["title"]))]),
-        _vm._v(" "),
-        _c("dt", [_vm._v("SubTitle")]),
-        _vm._v(" "),
-        _c("dd", [_vm._v(_vm._s(JSON.parse(_vm.books)[2]["subTitle"]))]),
-        _vm._v(" "),
-        _vm._l(3, function(n) {
+    _c("dl", [
+      _c("dd"),
+      _vm._v(" "),
+      _c(
+        "ol",
+        { staticClass: "track" },
+        _vm._l(_vm.title.length, function(n) {
           return _c("li", [
-            _vm._v(
-              "\n            " +
-                _vm._s(JSON.parse(_vm.books)[n]["title"]) +
-                "\n        "
-            )
+            _c("a", [_vm._v("Title :")]),
+            _vm._v(_vm._s(_vm.title[n - 1]) + "\n            "),
+            _c("br"),
+            _vm._v(" "),
+            _c("a", [_vm._v("SubTitle :")]),
+            _vm._v(_vm._s(_vm.subTitle[n - 1]) + "\n            "),
+            _c("br"),
+            _vm._v(" "),
+            _c("a", [_vm._v("URL :")]),
+            _c("img", { attrs: { src: "/img/Gazou_187.jpg" } }),
+            _vm._v(" "),
+            _c("br"),
+            _vm._v(" "),
+            _c("a", [_vm._v("ISBN :")]),
+            _vm._v(_vm._s(_vm.isbn[n - 1]) + "\n            "),
+            _c("br")
           ])
-        })
-      ],
-      2
-    )
+        }),
+        0
+      )
+    ])
   ])
 }
 var staticRenderFns = []
