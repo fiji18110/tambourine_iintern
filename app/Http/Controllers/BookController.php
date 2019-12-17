@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Book;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
@@ -20,7 +19,7 @@ class BookController extends Controller
             }else{
                 $before_url='https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&size=0&isbn=';
                 $jan=$isbn;
-                $after_url='&booksGenreId=001&applicationId=1071403648824460116';            
+                $after_url=env('RAKUTEN_API_KEI');            
                     
                 $url=$before_url.$jan.$after_url;
                 $ch = curl_init(); // 1. 初期化
