@@ -17,7 +17,7 @@ class BookInfoTable extends Migration
             $table->string('title');
             $table->string('subTitle');
             $table->string('imageUrl');
-            $table->unsignedInteger('isbn');
+            $table->string('isbn');
             $table->timestamps();
         });
     }

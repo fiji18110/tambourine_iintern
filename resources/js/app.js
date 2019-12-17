@@ -7,7 +7,9 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
+import Vue from 'vue'
+import VueRouter from 'vue-router'; // Vue Routerの読み込み
+Vue.use(VueRouter); // Vue.jsで、Vue Routerを使うように設定
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -18,9 +20,13 @@ window.Vue = require('vue');
 
 // const files = require.context('./', true, /\.vue$/i);
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
-
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-Vue.component('all-book-component', require('./components/all_book.vue').default);
+const router = new VueRouter({
+    mode: 'history',
+    routes: [
+        { path: '/', component: require('./components/all_book.vue').default, name: 'home' }, 
+        { path: '/barcode_reader', component: require('./components/get-book.vue').default, name: 'barcode_reader' },
+    ]
+});
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -29,5 +35,6 @@ Vue.component('all-book-component', require('./components/all_book.vue').default
  */
 
 const app = new Vue({
+    router:router,
     el: '#app',
 });

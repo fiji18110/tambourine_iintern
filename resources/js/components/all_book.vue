@@ -1,24 +1,21 @@
 <template>
+    
     <div>
         <dl>
-
-            <dd></dd>
-            <ol class="track">
-            <li v-for="n of title.length">
-                <a>Title :</a>{{title[n-1]}}
-                <br>
-                <a>SubTitle :</a>{{subTitle[n-1]}}
-                <br>
-                <!-- <a>URL :</a><img src={{imageUrl[n-1]}}/> -->
-                <a>URL :</a><img src='/img/Gazou_187.jpg'/> 
-                <!--laravelのコントローラで画像を保存、保存先のパスをimageUrlに格納、その際に同じisbnがないか調べる-->
-                <!-- <a>URL :</a>{{imageUrl[n-1]}} -->
-                <br>
-                <a>ISBN :</a>{{isbn[n-1]}}
-                <br>
-
-            </li>
-            </ol>
+            <div>
+                <router-link to='/barcode_reader' class="btn-square-pop">バーコードリーダー</router-link>
+                <router-view/>
+            </div>
+            <div>
+            <div v-for="(book ,index) in books" :key="index">
+                <div class="books">
+                    <div>{{book.title}}<span @click="deleteItem(book.isbn)" class="command">[☓]</span></div>
+                    <div>{{book.subTitle}}</div>
+                    <div><img :src="book.imageUrl"/></div>
+                </div>
+                
+            </div>
+            </div>
 
         </dl>
     </div>
@@ -29,25 +26,37 @@
 
     export default {
         data() { //データの初期値を設定
-        return {
-            title:[],
-            subTitle:[],
-            imageUrl:[],
-            isbn:[],
-            
-        };
+            return{
+                books:[]
+            }
         },
         methods:{
+            
             getBookInfo(){
-                axios.get('http://localhost:8000/api/getInfo')
+                axios.get('/api/getInfo')
                 .then(response =>  {
-                    for(var i=0,l=response.data.length;i<l;i++){
-                        this.title.push(response.data[i].title);
-                        this.subTitle.push(response.data[i].subTitle);
-                        this.imageUrl.push(response.data[i].imageUrl);
-                        this.isbn.push(response.data[i].isbn);
-                    }
+                    this.books=response.data;
                 }).catch( error => { console.log(error); })
+            },
+            getImage(n){
+                return this.imageUrl[n];
+            },
+            deleteItem(isbn){
+                if(confirm('削除しますか？')){ //確認をとる
+                console.log(isbn);
+                    axios.get('/api/deleteBook',{
+                     params: {
+                        isbn: isbn
+                        }}).then((res) => {
+                        if(res[2]="OK"){
+                            alert('削除に成功しました');
+                            document.location='/';
+                        }else{
+                            alert('削除に失敗しました');
+                            document.location='/';
+                        }
+                });
+                }
             }
             
         },
@@ -59,3 +68,26 @@
         }
     }
 </script>
+<style>
+.books{
+    text-align: center; 
+    padding: 20px;
+}
+.btn-square-pop {
+  position: relative;
+  display: inline-block;
+  padding: 0.25em 0.5em;
+  text-decoration: none;
+  color: #FFF;
+  background: #fd9535;/*背景色*/
+  border-bottom: solid 2px #d27d00;/*少し濃い目の色に*/
+  border-radius: 4px;/*角の丸み*/
+  box-shadow: inset 0 2px 0 rgba(255,255,255,0.2), 0 2px 2px rgba(0, 0, 0, 0.19);
+  font-weight: bold;
+}
+
+.btn-square-pop:active {
+  border-bottom: solid 2px #fd9535;
+  box-shadow: 0 0 2px rgba(0, 0, 0, 0.30);
+}
+</style>
