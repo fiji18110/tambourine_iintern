@@ -19,7 +19,7 @@ class BookController extends Controller
             }else{
                 $before_url='https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?format=json&size=0&isbn=';
                 $jan=$isbn;
-                $after_url=env('RAKUTEN_API_KEI');            
+                $after_url=env('RAKUTEN_API_KEY');            
                     
                 $url=$before_url.$jan.$after_url;
                 $ch = curl_init(); // 1. 初期化
